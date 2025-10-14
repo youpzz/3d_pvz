@@ -59,7 +59,13 @@ public class PlayerInterface : MonoBehaviour
 
     public void TriggerPanel(GameObject _panel) {_panel.SetActive(!_panel.activeSelf); isPanelOpened = upgradesPanel.activeSelf; }
 
-    void RestartGame() { Time.timeScale = 1f; SceneManager.LoadScene(0); }
+    void RestartGame() 
+    {
+        Time.timeScale = 1f;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false; 
+        SceneManager.LoadScene(0); 
+    }
 
     public void EndGame()
     {

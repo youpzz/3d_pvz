@@ -64,7 +64,13 @@ public class PlayerSettings : MonoBehaviour
 
     }
 
-    void RestartGame() => SceneManager.LoadScene(0);
+    void RestartGame()
+    {
+        Time.timeScale = 1f;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        SceneManager.LoadScene(0);
+    } 
     
 
     void LoadSettings()

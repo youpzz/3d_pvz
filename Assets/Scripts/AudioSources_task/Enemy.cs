@@ -68,6 +68,7 @@ public class Enemy : MonoBehaviour
             }
             else
             {
+                canMove = false;
                 PlayerInterface.Instance.EndGame();
             }
         }
