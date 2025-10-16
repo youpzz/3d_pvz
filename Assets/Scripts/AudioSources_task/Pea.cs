@@ -6,7 +6,7 @@ public class Pea : MonoBehaviour
     [SerializeField] private float damage = 1f;
     [SerializeField] private float lifeTime = 5f;
 
-    [SerializeField] private GameObject hitParticle;
+    [SerializeField] private GameObject[] hitParticle;
 
     void Start() => Destroy(gameObject, lifeTime);
 
@@ -14,15 +14,16 @@ public class Pea : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.GetComponentInParent<Enemy>())
+        if (collision.gameObject.GetComponentInParent<EnemyHealth>())
         {
-            Enemy enemy = collision.gameObject.GetComponentInParent<Enemy>();
+            
+            EnemyHealth enemy = collision.gameObject.GetComponentInParent<EnemyHealth>();
+            if (enemy.GetHealth() <= 0) return;
+
             enemy.TakeDamage(damage);
-            if (hitParticle) Instantiate(hitParticle, transform.position, Quaternion.identity);
+            if (hitParticle.Length > 0) Instantiate(hitParticle[Random.Range(0, hitParticle.Length)], transform.position, Quaternion.identity);
             PlayerAudio.Instance.PlaySound("pea_hit");
-
             PlayerAudio.Instance.MakeDistortion(); // для тз дисторшен включаем
-
             Destroy(gameObject);
 
         }

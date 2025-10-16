@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
     bool isMoving = false;
     bool canShoot = true;
     bool canMove = true;
+    bool tryingToMove = false;
 
     private float cooldownFill = 0;
 
@@ -109,8 +110,10 @@ public class PlayerController : MonoBehaviour
 
     void ChangeRow(int value)
     {
+
+        if (isMoving || tryingToMove) return;
         Debug.Log($"Двигаюсь {value}");
-        if (isMoving) return;
+        tryingToMove = true;
         currentRow += value;
         if (currentRow <= 0) currentRow = 0;
         if (currentRow >= rows.Length) currentRow = rows.Length - 1;
@@ -151,6 +154,7 @@ public class PlayerController : MonoBehaviour
             transform.position = moveTarget.position;
             isMoving = false;
             moveTarget = null;
+            tryingToMove = false;
         }
     }
 

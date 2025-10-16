@@ -7,7 +7,8 @@ public class WavesSpawner : MonoBehaviour
     public static WavesSpawner Instance;
     [SerializeField] private int wave = 1;
 
-    [SerializeField] private GameObject zombie;
+    [SerializeField] private GameObject[] zombiePrefab;
+    [SerializeField] private GameObject flagZombie;
 
     public List<GameObject> spawnedZombies = new List<GameObject>();
 
@@ -26,6 +27,8 @@ public class WavesSpawner : MonoBehaviour
 
 
     bool isWaveEnded = false;
+
+    private bool wasFlagSpawned = false;
 
 
     void Start()
@@ -49,6 +52,7 @@ public class WavesSpawner : MonoBehaviour
         wave++;
         isWaveEnded = true;
         zombiesToSpawn = wave;
+        wasFlagSpawned = false;
 
         float timer = waveCooldown;
 
@@ -74,7 +78,11 @@ public class WavesSpawner : MonoBehaviour
         }
 
         int randomRow = Random.Range(0, rows.Length);
-        GameObject zombie_ = Instantiate(zombie, rows[randomRow].GetSpawnPoint().position, Quaternion.identity);
+
+        GameObject zombie_;
+        if (!wasFlagSpawned) { zombie_ = Instantiate(flagZombie, rows[randomRow].GetSpawnPoint().position, Quaternion.identity); wasFlagSpawned = true; }
+        else zombie_ = Instantiate(zombiePrefab[0], rows[randomRow].GetSpawnPoint().position, Quaternion.identity);
+
         zombie_.GetComponent<Enemy>().SetTarget(rows[randomRow].GetTransform());
         spawnedZombies.Add(zombie_);
         isWaveEnded = false;
